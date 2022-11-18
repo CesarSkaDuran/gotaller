@@ -1,0 +1,44 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+
+
+table{
+    width: 100%;
+    margin: 10px;
+}
+
+.bg{
+ background: rgb(38, 117, 187);
+ background: linear-gradient(41deg, rgba(38, 117, 187, 1) 0%, rgba(51, 51, 153, 1) 35%, rgba(51, 51, 153, 1) 100%);
+}
+.bg-card-up{
+    background: linear-gradient(41deg, rgba(51, 51, 153, 1) 0%, rgba(38, 117, 187, 1) 35%, rgba(51, 51, 153, 1) 100%);
+}
+.mat-icon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    min-height: 24px;
+    font-size: 24px;
+    line-height: 24px;
+    -webkit-appearance: none !important;
+    color: white;
+}
+.bg-primary{
+    background: linear-gradient(41deg, rgba(51, 51, 153, 1) 0%, rgba(38, 117, 187, 1) 35%, rgba(51, 51, 153, 1) 100%);
+}
+body.light .mat-flat-button.mat-primary,
+body.light .mat-raised-button.mat-primary,
+body.light .mat-fab.mat-primary,
+body.light .mat-mini-fab.mat-primary,
+body .light .mat-flat-button.mat-primary,
+body .light .mat-raised-button.mat-primary,
+body .light .mat-fab.mat-primary,
+body .light .mat-mini-fab.mat-primary {
+    background-color:rgba(51, 51, 153, 1);
+}
