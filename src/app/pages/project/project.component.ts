@@ -30,6 +30,7 @@ export class ProjectComponent implements OnInit, OnDestroy
     selectedProject: string = 'ACME Corp. Backend App';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     userData: any;
+    user:any;
 
     /**
      * Constructor
@@ -155,17 +156,22 @@ export class ProjectComponent implements OnInit, OnDestroy
 
                 // Prepare the chart data
                 this._prepareChartData();
-            });
-        const nombreQuery = 'me';
-        const queryParams = `search: " " `;
-        const queryProps = 'id,name,email, avatar';
+        });
 
-        this.apiService.getData(queryProps, queryParams, nombreQuery).
-            subscribe((response) => {
-                this._userService.setUser(new user().deserialize(response.data.me));
-                this.userData = response.data.me;
-            });
-        // Attach SVG fill fixer to all ApexCharts
+        // Subscribe to user changes
+        this._userService.user$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((user: any) => {
+
+            console.log("El usuario devuelto desde get user", user);
+
+            this.user = user;
+
+            // Mark for check
+            //this._changeDetectorRef.markForCheck();
+        });
+
+
         window['Apex'] = {
             chart: {
                 events: {

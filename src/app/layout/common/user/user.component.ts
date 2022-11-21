@@ -47,31 +47,15 @@ export class UserComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to user changes
-        // this._userService.user$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((user: User) => {
-        //         this.user = user;
+         this._userService.user$
+             .pipe(takeUntil(this._unsubscribeAll))
+             .subscribe((user: User) => {
+                 this.user = user;
 
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
+                 // Mark for check
+                 this._changeDetectorRef.markForCheck();
+             });
 
-        const nombreQuery = 'me';
-        const queryParams = `search: " " `;
-        const queryProps = 'id,name,email, avatar';
-
-        this.apiService.getData(queryProps, queryParams, nombreQuery).
-            subscribe((response) => {
-                this._userService.setUser(new user().deserialize(response.data.me));
-                this.user = response.data.me;
-            });
-        error => {
-            console.log('user session denied, logging out...');
-            // this.splashScreen.hide();
-            // this.authenticationService.logout();
-            this._router.navigate(['/sign-in'], { replaceUrl: true });
-            
-        }
     }
 
     /**

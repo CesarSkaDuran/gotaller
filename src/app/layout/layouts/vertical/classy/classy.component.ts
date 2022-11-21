@@ -73,26 +73,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
         this._userService.user$
             .pipe((takeUntil(this._unsubscribeAll)))
             .subscribe((user: User) => {
+                console.log("Usuario desde classy", user);
                 this.user = user;
-            });
-            
-        const nombreQuery ='me';
-        const queryParams = `search: " " `;
-        const queryProps='id,name,email, avatar';
+        });
 
-        this.apiService.getData(queryProps,queryParams,nombreQuery).
-        subscribe((response) => {
-            this._userService.setUser(new user().deserialize(response.data.me));
-            this.userData = response.data.me;
-         });
-        // Subscribe to media changes
-        this._fuseMediaWatcherService.onMediaChange$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(({matchingAliases}) => {
-
-                // Check if the screen is small
-                this.isScreenSmall = !matchingAliases.includes('md');
-            });
     }
 
     /**

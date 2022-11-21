@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class AuthService
@@ -74,14 +75,19 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post('http://localhost:8000/v1/auth/login', credentials).pipe(
+        return this._httpClient.post(`${environment.serverUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
 
                 console.log("Usuario actual desde json");
                 console.log(JSON.parse(localStorage.getItem('currentUser')));
 
+                localStorage.setItem('userId', response.user.id);
+                localStorage.setItem('refreshToken', response.refreshToken);
+
+                console.log("Esto es lo que devuelve al loguear ", response)
+
                 // Store the access token in the local storage
-                this.accessToken = response.access_token;
+                this.accessToken = response.token;
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
@@ -101,8 +107,10 @@ export class AuthService
     signInUsingToken(): Observable<any>
     {
         // Renew token
-        return this._httpClient.post('http://localhost:8000/v1/auth/refresh', {
-            accessToken: this.accessToken
+        return this._httpClient.post(`${environment.serverUrl}/login/refresh`, {
+            accessToken: this.accessToken,
+            refreshToken: localStorage.getItem("refreshToken"),
+            id:localStorage.getItem("userId")
         }).pipe(
             catchError(() =>
 
@@ -115,7 +123,7 @@ export class AuthService
                 console.log(response);
 
                 // Store the access token in the local storage
-                this.accessToken = response.access_token;
+                this.accessToken = response.token;
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
